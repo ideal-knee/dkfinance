@@ -22,6 +22,18 @@ development:
   username: dkfinance
   password:
 
+work:
+  adapter: postgresql
+  username: dkfinance_development
+  password: dkfinance_development_password
+  database: dkfinance_development
+  # encoding: utf8
+  # template: template0
+  host: localhost
+  port: 5433
+  # prepared_statements: false
+  # min_messages: WARNING
+
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
   # domain sockets, so uncomment these lines.
