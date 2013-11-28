@@ -3,7 +3,10 @@ class ImportDataController < ApplicationController
   end
 
   def process_csv
-    render text: params[:csv_data].read
+    params[:csv_data].read.split("\n").each do |line|
+      Transaction.create_from_csv_line(line)
+    end
+    redirect_to controller: 'transactions', action: 'index'
   end
 
   def upload_statement
