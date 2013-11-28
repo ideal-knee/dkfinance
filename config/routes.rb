@@ -1,4 +1,6 @@
 Dkfinance::Application.routes.draw do
+  get "import_data/upload_csv"
+  get "import_data/upload_statement"
   resources :transactions
 
   resources :categories
