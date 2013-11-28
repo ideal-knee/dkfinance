@@ -1,8 +1,9 @@
 Dkfinance::Application.routes.draw do
   get "import_data/upload_csv"
   get "import_data/upload_statement"
-  resources :transactions
+  post "import_data/process_csv"
 
+  resources :transactions
   resources :categories
 
   # The priority is based upon order of creation: first created -> highest priority.

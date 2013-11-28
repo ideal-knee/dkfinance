@@ -1,2 +1,7 @@
-<h1>ImportData#upload_csv</h1>
-<p>Find me in app/views/import_data/upload_csv.html.erb</p>
+<h1>Import CSV Data</h1>
+
+<%= form_tag({action: :process_csv}, multipart: true) do %>
+  <%= file_field_tag 'csv_data' %>
+  <br />
+  <%= submit_tag 'Import' %>
+<% end %>
