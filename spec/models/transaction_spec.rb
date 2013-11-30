@@ -27,5 +27,10 @@ describe Transaction do
       t = Transaction.create_from_csv_line(%{"2013-01-02","TRADER JOE'S #503  QPS FRAMINGHAM    MA","-12.96","Groceries"})
       t.category.should == c
     end
+
+    it "doesn't blow up on bad input" do
+      t = Transaction.create_from_csv_line(%{"2013-01-02 TRADER JOE'S #503  QPS FRAMINGHAM    MA","-12.96","Groceries"})
+      t.should be_nil
+    end
   end
 end
