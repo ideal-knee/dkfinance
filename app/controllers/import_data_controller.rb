@@ -1,4 +1,6 @@
 class ImportDataController < ApplicationController
+  before_filter :authenticate_user!
+
   def upload_csv
   end
 
