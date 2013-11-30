@@ -15,5 +15,17 @@ describe Transaction do
       t.amount.should == -12.96
       t.category.name.should == 'Groceries'
     end
+
+    it "creates new categories as necessary" do
+      Category.count.should == 0
+      t = Transaction.create_from_csv_line(%{"2013-01-02","TRADER JOE'S #503  QPS FRAMINGHAM    MA","-12.96","Groceries"})
+      Category.count.should == 1
+    end
+
+    it "uses existing categories if appropriate" do
+      c = Category.create(name: "Groceries")
+      t = Transaction.create_from_csv_line(%{"2013-01-02","TRADER JOE'S #503  QPS FRAMINGHAM    MA","-12.96","Groceries"})
+      t.category.should == c
+    end
   end
 end
