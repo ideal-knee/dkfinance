@@ -1,5 +1,6 @@
 class Transaction < ActiveRecord::Base
   belongs_to :category
+  belongs_to :user
 
   def self.create_from_csv_line(line)
     parts = line.split(',').map { |part| part.gsub '"', '' }
