@@ -6,12 +6,13 @@ class TransactionsController < ApplicationController
   # GET /transactions
   # GET /transactions.json
   def index
-    @transactions = Transaction.all
+    @transactions = current_user.transactions
   end
 
   # GET /transactions/1
   # GET /transactions/1.json
   def show
+    render status: :forbidden, text: "Forbidden!" unless @transaction.user == current_user
   end
 
   # GET /transactions/new
@@ -21,12 +22,13 @@ class TransactionsController < ApplicationController
 
   # GET /transactions/1/edit
   def edit
+    render status: :forbidden, text: "Forbidden!" unless @transaction.user == current_user
   end
 
   # POST /transactions
   # POST /transactions.json
   def create
-    @transaction = Transaction.new(transaction_params)
+    @transaction = Transaction.new(transaction_params.merge(user: current_user))
 
     respond_to do |format|
       if @transaction.save
@@ -42,6 +44,8 @@ class TransactionsController < ApplicationController
   # PATCH/PUT /transactions/1
   # PATCH/PUT /transactions/1.json
   def update
+    render status: :forbidden, text: "Forbidden!" unless @transaction.user == current_user
+
     respond_to do |format|
       if @transaction.update(transaction_params)
         format.html { redirect_to @transaction, notice: 'Transaction was successfully updated.' }
@@ -56,6 +60,8 @@ class TransactionsController < ApplicationController
   # DELETE /transactions/1
   # DELETE /transactions/1.json
   def destroy
+    render status: :forbidden, text: "Forbidden!" unless @transaction.user == current_user
+
     @transaction.destroy
     respond_to do |format|
       format.html { redirect_to transactions_url }
