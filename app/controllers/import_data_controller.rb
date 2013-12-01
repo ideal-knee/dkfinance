@@ -6,7 +6,7 @@ class ImportDataController < ApplicationController
 
   def process_csv
     params[:csv_data].read.split("\n").each do |line|
-      Transaction.create_from_csv_line(line)
+      Transaction.create_from_csv_line(line, current_user)
     end
     redirect_to controller: 'transactions', action: 'index'
   end
