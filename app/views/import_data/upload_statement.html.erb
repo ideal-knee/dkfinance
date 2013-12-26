@@ -1,2 +1,9 @@
-<h1>ImportData#upload_statement</h1>
-<p>Find me in app/views/import_data/upload_statement.html.erb</p>
+<h1>Import Statement Data</h1>
+
+<%= form_tag({action: :process_statement}, multipart: true) do %>
+  Bank: <%= select_tag(:bank, options_for_select(ImportDataHelper::BANKS), :prompt => "Select Bank", :required  => true) %>
+  <br />
+  <%= file_field_tag 'statement_data', :required => true %>
+  <br />
+  <%= submit_tag 'Import' %>
+<% end %>

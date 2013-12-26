@@ -13,4 +13,9 @@ class ImportDataController < ApplicationController
 
   def upload_statement
   end
+
+  def process_statement
+    ImportDataHelper.parse_statement(params[:bank], params[:statement_data].read)
+    redirect_to controller: 'transactions', action: 'index'
+  end
 end
