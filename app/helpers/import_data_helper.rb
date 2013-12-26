@@ -27,17 +27,12 @@ module ImportDataHelper
     STATEMENT_COLUMNS[bank].index(column)
   end
 
-  # def self.parse_date date_string
-  #   Time.local( *ParseDate.parsedate( date_string ) )
-  # end
-
-  def self.parse_statement(bank, data)
+  def self.parse_statement(bank, data, user)
     delimiter = (bank == 'citi' ? '|' : ',')
     sign = (bank == 'citi' ? -1 : 1)
     n_headers = N_HEADERS[bank]
 
     CSV.parse(data, :col_sep => delimiter) do |line|
-      Rails.logger.info "Parsing line: #{line.to_s}"
       if n_headers > 0
         n_headers -= 1
         next
@@ -46,13 +41,20 @@ module ImportDataHelper
       if bank == 'dcu' and line[column_index(bank, :amount)] == nil
         line[column_index(bank, :amount)] = line[column_index(bank, :amount_credited)]
       end
+
       Rails.logger.info [
-        # parse_date(line[column_index(bank, :date)]).strftime('%Y%m%d'),
         Date.parse(line[column_index(bank, :date)]).strftime('%Y%m%d'),
         line[column_index(bank, :description) ].strip().gsub('"',''),
-        line[column_index(bank, :amount)].gsub('$','').gsub(',','').to_f*sign,
-        'Uncategorized'
+        line[column_index(bank, :amount)].gsub('$','').gsub(',','').to_f*sign
       ].join("\t")
+
+      Transaction.create(
+        date: Date.parse(line[column_index(bank, :date)]),
+        description: line[column_index(bank, :description) ].strip().gsub('"',''),
+        amount: line[column_index(bank, :amount)].gsub('$','').gsub(',','').to_f*sign,
+        category: Category.first_or_create(name: 'Uncategorized'),
+        user: user
+      )
     end
   end
 end

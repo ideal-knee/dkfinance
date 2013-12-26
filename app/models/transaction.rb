@@ -2,7 +2,9 @@ class Transaction < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
 
-  def self.create_from_csv_line(line, user = nil)
+  validates :user, :presence => true
+
+  def self.create_from_csv_line(line, user)
     parts = line.split(',').map { |part| part.gsub '"', '' }
 
     if parts.length == 4

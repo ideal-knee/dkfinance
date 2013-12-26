@@ -15,7 +15,7 @@ class ImportDataController < ApplicationController
   end
 
   def process_statement
-    ImportDataHelper.parse_statement(params[:bank], params[:statement_data].read)
+    ImportDataHelper.parse_statement(params[:bank], params[:statement_data].read, current_user)
     redirect_to controller: 'transactions', action: 'index'
   end
 end
