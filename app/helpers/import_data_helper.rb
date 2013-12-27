@@ -42,19 +42,16 @@ module ImportDataHelper
         line[column_index(bank, :amount)] = line[column_index(bank, :amount_credited)]
       end
 
-      Rails.logger.info [
-        Date.parse(line[column_index(bank, :date)]).strftime('%Y%m%d'),
-        line[column_index(bank, :description) ].strip().gsub('"',''),
-        line[column_index(bank, :amount)].gsub('$','').gsub(',','').to_f*sign
-      ].join("\t")
-
-      Transaction.create(
+      transaction = {
         date: Date.parse(line[column_index(bank, :date)]),
         description: line[column_index(bank, :description) ].strip().gsub('"',''),
         amount: line[column_index(bank, :amount)].gsub('$','').gsub(',','').to_f*sign,
-        category: Category.first_or_create(name: 'Uncategorized'),
+        category: Category.find_or_create_by(name: 'Uncategorized', user: user),
         user: user
-      )
+      }
+
+      Rails.logger.info "Creating transaction: #{transaction}"
+      Transaction.create transaction
     end
   end
 end
