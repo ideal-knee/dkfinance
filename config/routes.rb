@@ -6,6 +6,9 @@ Dkfinance::Application.routes.draw do
   get "import_data/upload_statement", as: 'upload_statement'
   post "import_data/process_statement"
 
+  get "transactions/categorize", as: 'transactions_categorize'
+  post "transactions/save_categories", as: 'transactions_save_categories'
+
   resources :transactions
   resources :categories
 

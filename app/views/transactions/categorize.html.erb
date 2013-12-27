@@ -1,0 +1,28 @@
+<h1>Categorize Transactions</h1>
+
+<%= form_tag(transactions_save_categories_path) do %>
+  <%= collection_select(:category, :id, Category.all.order(:name), :id, :name, :prompt => "Select Category") %>
+  <%= submit_tag %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @transactions.each do |transaction| %>
+        <tr>
+          <td><%= check_box_tag('transactions[]', transaction.id) %></td>
+          <td><%= transaction.description %></td>
+          <td><%= transaction.amount %></td>
+          <td><%= transaction.date %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
