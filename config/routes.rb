@@ -1,9 +1,9 @@
 Dkfinance::Application.routes.draw do
   devise_for :users
-  get "import_data/upload_csv"
+  get "import_data/upload_csv", as: 'upload_csv'
   post "import_data/process_csv"
 
-  get "import_data/upload_statement"
+  get "import_data/upload_statement", as: 'upload_statement'
   post "import_data/process_statement"
 
   resources :transactions
