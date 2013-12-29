@@ -1,0 +1,22 @@
+<h1>Month to Month Analysis</h1>
+
+<table>
+  <tr>
+    <th>Month</th>
+    <th>Income</th>
+    <% @categories.each do |category| %>
+      <th><%= category %></th>
+    <% end %>
+    <th>Net</th>
+  </tr>
+  <% @results.each do |result| %>
+    <tr>
+      <td><%= result[:month] %></td>
+      <td><%= result[:income] %></td>
+      <% @categories.each do |category| %>
+        <td><%= result[:by_category][category] %></td>
+      <% end %>
+      <td><%= result[:net] %></td>
+    </tr>
+  <% end %>
+</table>

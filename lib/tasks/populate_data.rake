@@ -13,12 +13,12 @@ begin
       user.save!
 
       categories = %w{
-      Commuting
-      Entertainment
-      Food
-      Medical
-      Paycheck
-      Travel
+        Commuting
+        Entertainment
+        Food
+        Medical
+        Paycheck
+        Travel
       }
 
       companies = []

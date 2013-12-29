@@ -9,6 +9,8 @@ Dkfinance::Application.routes.draw do
   get "transactions/categorize", as: 'transactions_categorize'
   post "transactions/save_categories", as: 'transactions_save_categories'
 
+  get "analyze/month_to_month", as: 'analyze_month_to_month'
+
   resources :transactions
   resources :categories
 
