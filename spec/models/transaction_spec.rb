@@ -33,5 +33,10 @@ describe Transaction do
       t = Transaction.create_from_csv_line(%{"2013-01-02 TRADER JOE'S #503  QPS FRAMINGHAM    MA","-12.96","Groceries"}, @user)
       t.should be_nil
     end
+
+    it "handles commas in descriptions correctly" do
+      t = Transaction.create_from_csv_line('"2012-09-06","CLICK-TO-PAY PAYMENT, THANK YOU","1837.97","Transfer"', @user)
+      t.should_not be_nil
+    end
   end
 end
