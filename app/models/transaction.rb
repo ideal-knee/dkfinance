@@ -5,7 +5,7 @@ class Transaction < ActiveRecord::Base
   validates :user, :presence => true
 
   def self.create_from_csv_line(line, user)
-    parts = line.split(',').map { |part| part.gsub '"', '' }
+    parts = CSV.parse(line).first
 
     if parts.length == 4
       date, description, amount, category_name = parts
