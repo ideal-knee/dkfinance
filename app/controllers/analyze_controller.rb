@@ -21,4 +21,13 @@ class AnalyzeController < ApplicationController
       }
     end
   end
+
+  def month_breakdown
+    @category = Category.find_by_machine_name(params[:category])
+    @start_date = Date.new(params[:year].to_i, params[:month].to_i)
+    end_date = @start_date + 1.month
+    @transactions = Transaction.where(user: current_user,
+                                      category: @category,
+                                      date: @start_date...end_date).order(:amount)
+  end
 end
