@@ -2,3 +2,28 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+table {
+  border-collapse: collapse;
+}
+
+td {
+  text-align: right;
+  border: thin solid silver;
+  padding: 5px;
+}
+
+.amount {
+  width: 110px;
+}
+
+td a {
+  text-decoration: none;
+}
+
+td a:visited {
+  color: black;
+}
+
+td a:hover {
+  color: white;
+}

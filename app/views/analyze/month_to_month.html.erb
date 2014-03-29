@@ -5,18 +5,22 @@
     <th>Month</th>
     <th>Income</th>
     <% @categories.each do |category| %>
-      <th><%= category %></th>
+      <th><%= category.name %></th>
     <% end %>
     <th>Net</th>
   </tr>
   <% @results.each do |result| %>
     <tr>
-      <td><%= result[:month] %></td>
-      <td><%= result[:income] %></td>
+      <td><div class="amount"><%= result[:date].strftime("%b %Y") %></div></td>
+      <td><div class="amount"><%= number_to_currency(result[:income]) %></div></td>
       <% @categories.each do |category| %>
-        <td><%= result[:by_category][category] %></td>
+      <td>
+        <div class="amount">
+          <%= link_to number_to_currency(result[:by_category][category]), analyze_month_breakdown_path(category: category.machine_name, year: result[:date].year, month: result[:date].month) %>
+        </div>
+      </td>
       <% end %>
-      <td><%= result[:net] %></td>
+      <td><div class="amount"><%= number_to_currency(result[:net]) %></div></td>
     </tr>
   <% end %>
 </table>
