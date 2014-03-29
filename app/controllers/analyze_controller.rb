@@ -3,7 +3,7 @@ class AnalyzeController < ApplicationController
 
   def month_to_month
     paycheck_category = current_user.categories.find_by(name: 'Paycheck')
-    @categories = current_user.categories.where.not(name: ['Paycheck', 'Uncategorized', 'Education', 'Transfer', 'Interest', 'Rent', 'Gifts', 'Fitness', 'Cash', 'Alcohol', 'Bank Fee', 'Tax Expense'])
+    @categories = current_user.categories.where.not(name: ['Paycheck', 'Uncategorized', 'Education', 'Transfer', 'Interest', 'Rent', 'Gifts', 'Fitness', 'Cash', 'Alcohol', 'Bank Fee', 'Tax Expense', 'Donation', 'Fraud', 'Wedding', 'Account Verification', 'Honeymoon'])
     @results = []
     12.times do |i|
       date = (Date.today - i.months)
