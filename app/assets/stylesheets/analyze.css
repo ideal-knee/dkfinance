@@ -6,6 +6,10 @@ table {
   border-collapse: collapse;
 }
 
+tr:nth-child(even) {
+  background-color: #EEEEEE;
+}
+
 td {
   text-align: right;
   border: thin solid silver;

@@ -4,15 +4,16 @@
   <tr>
     <th>Month</th>
     <th>Income</th>
+    <th>Net</th>
     <% @categories.each do |category| %>
       <th><%= category.name %></th>
     <% end %>
-    <th>Net</th>
   </tr>
   <% @results.each do |result| %>
     <tr>
       <td><div class="amount"><%= result[:date].strftime("%b %Y") %></div></td>
       <td><div class="amount"><%= number_to_currency(result[:income]) %></div></td>
+      <td><div class="amount"><%= number_to_currency(result[:net]) %></div></td>
       <% @categories.each do |category| %>
       <td>
         <div class="amount">
@@ -20,7 +21,6 @@
         </div>
       </td>
       <% end %>
-      <td><div class="amount"><%= number_to_currency(result[:net]) %></div></td>
     </tr>
   <% end %>
 </table>
