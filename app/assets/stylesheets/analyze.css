@@ -16,6 +16,10 @@ td {
   padding: 5px;
 }
 
+td.over-budget {
+  background-color: pink;
+}
+
 .amount {
   width: 110px;
 }
