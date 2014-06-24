@@ -10,6 +10,7 @@ Dkfinance::Application.routes.draw do
   post "transactions/save_categories", as: 'transactions_save_categories'
 
   get "analyze/month_to_month", as: 'analyze_month_to_month'
+  get "analyze/month_breakdown/all_categories/:year/:month", to: 'analyze#month_breakdown_all', as: 'analyze_month_breakdown_all'
   get "analyze/month_breakdown/:category/:year/:month", to: 'analyze#month_breakdown', as: 'analyze_month_breakdown'
 
   resources :transactions

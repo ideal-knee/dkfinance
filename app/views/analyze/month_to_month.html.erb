@@ -13,7 +13,11 @@
     <tr>
       <td><div class="amount"><%= result[:date].strftime("%b %Y") %></div></td>
       <td><div class="amount"><%= number_to_currency(result[:income]) %></div></td>
-      <td><div class="amount"><%= number_to_currency(result[:net]) %></div></td>
+      <td>
+        <div class="amount">
+          <%= link_to number_to_currency(result[:net]), analyze_month_breakdown_all_path(year: result[:date].year, month: result[:date].month) %>
+        </div>
+      </td>
       <% @categories.each do |category| %>
       <td <%== category.budget and result[:by_category][category].abs > category.budget ? 'class="over-budget"' : '' %>>
         <div class="amount">

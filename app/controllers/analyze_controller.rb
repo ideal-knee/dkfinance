@@ -29,4 +29,14 @@ class AnalyzeController < ApplicationController
                                       category: @category,
                                       date: @start_date...end_date).order(:amount)
   end
+
+  def month_breakdown_all
+    @category = OpenStruct.new(name: "All Categories")
+    @start_date = Date.new(params[:year].to_i, params[:month].to_i)
+    end_date = @start_date + 1.month
+    @transactions = Transaction.where(user: current_user,
+                                      date: @start_date...end_date).order(:amount)
+
+    render :month_breakdown
+  end
 end
