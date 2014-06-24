@@ -34,8 +34,10 @@ class AnalyzeController < ApplicationController
     @category = OpenStruct.new(name: "All Categories")
     @start_date = Date.new(params[:year].to_i, params[:month].to_i)
     end_date = @start_date + 1.month
-    @transactions = Transaction.where(user: current_user,
-                                      date: @start_date...end_date).order(:amount)
+    @transactions = Transaction.
+      where(user: current_user, date: @start_date...end_date).
+      where.not(category_id: Category.find_by_machine_name('transfer').id).
+      order(:amount)
 
     render :month_breakdown
   end
