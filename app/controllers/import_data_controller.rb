@@ -8,7 +8,8 @@ class ImportDataController < ApplicationController
     params[:csv_data].read.split("\n").each do |line|
       Transaction.create_from_csv_line(line, current_user)
     end
-    redirect_to controller: 'transactions', action: 'index'
+    flash[:notice] = "CSV processed."
+    redirect_to action: 'upload_csv'
   end
 
   def upload_statement
@@ -16,6 +17,7 @@ class ImportDataController < ApplicationController
 
   def process_statement
     ImportDataHelper.parse_statement(params[:bank], params[:statement_data].read, current_user)
-    redirect_to controller: 'transactions', action: 'index'
+    flash[:notice] = "#{params[:bank]} statement imported."
+    redirect_to action: 'upload_statement'
   end
 end
