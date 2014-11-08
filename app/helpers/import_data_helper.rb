@@ -38,6 +38,10 @@ module ImportDataHelper
         next
       end
 
+      if transaction < 3
+        next
+      end
+
       if bank == 'dcu' and line[column_index(bank, :amount)] == nil
         line[column_index(bank, :amount)] = line[column_index(bank, :amount_credited)]
       end
