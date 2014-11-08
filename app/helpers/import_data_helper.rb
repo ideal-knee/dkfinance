@@ -38,7 +38,7 @@ module ImportDataHelper
         next
       end
 
-      if transaction < 3
+      if line.length < 3
         next
       end
 
