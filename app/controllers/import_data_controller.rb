@@ -16,7 +16,7 @@ class ImportDataController < ApplicationController
   end
 
   def process_statement
-    ImportDataHelper.parse_statement(params[:bank], params[:statement_data].read, current_user)
+    ImportDataHelper.import_statement(params[:bank], params[:statement_data].read, current_user)
     flash[:notice] = "#{params[:bank]} statement imported."
     redirect_to action: 'upload_statement'
   end

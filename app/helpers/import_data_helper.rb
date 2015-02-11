@@ -27,12 +27,12 @@ module ImportDataHelper
     STATEMENT_COLUMNS[bank].index(column)
   end
 
-  def self.parse_statement(bank, data, user)
+  def self.parse_statement(bank, data, user, category)
     delimiter = (bank == 'citi' ? '|' : ',')
     sign = (bank == 'citi' ? -1 : 1)
     n_headers = N_HEADERS[bank]
 
-    CSV.parse(data, :col_sep => delimiter) do |line|
+    CSV.parse(data, :col_sep => delimiter).map do |line|
       if n_headers > 0
         n_headers -= 1
         next
@@ -46,14 +46,20 @@ module ImportDataHelper
         line[column_index(bank, :amount)] = line[column_index(bank, :amount_credited)]
       end
 
-      transaction = {
+      {
         date: Date.parse(line[column_index(bank, :date)]),
         description: line[column_index(bank, :description) ].strip().gsub('"',''),
         amount: line[column_index(bank, :amount)].gsub('$','').gsub(',','').to_f*sign,
-        category: Category.find_or_create_by(name: 'Uncategorized', user: user),
+        category: category,
         user: user
       }
+    end
+  end
 
+  def self.import_statement(bank, data, user)
+    category = Category.find_or_create_by(name: 'Uncategorized', user: user)
+
+    parse_statement(bank, data, user, category).each do |transaction|
       Rails.logger.info "Creating transaction: #{transaction}"
       Transaction.create transaction
     end
