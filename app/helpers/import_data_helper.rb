@@ -1,26 +1,21 @@
 require 'csv'
 
 module ImportDataHelper
-  BANKS = [
-    ['Chase', 'chase'],
-    ['Citi' , 'citi' ],
-    ['DCU'  , 'dcu'  ],
-    ['ING'  , 'ing'  ]
-  ]
-
   STATEMENT_COLUMNS = {
     'chase' => [ :transaction_type, :date, :other_date, :description, :amount ],
-    'citi' => [ :date, :amount, :description, :unknown ],
+    'old-citi' => [ :date, :amount, :description, :unknown ],
+    'citi' => [ :status, :date, :description, :amount, :amount_credited ],
     'dcu' => [ :transaction_number, :date, :description, :memo, :amount, :amount_credited ],
     'ing' => [ :bank_id, :account_number, :account_type, :balance, :start_date,
       :end_date, :transaction_type, :date, :amount, :id, :description ]
   }
 
   N_HEADERS = {
-    'chase' => 1,
-    'citi'  => 0,
-    'dcu'   => 4,
-    'ing'   => 1
+    'chase'     => 1,
+    'old-citi'  => 0,
+    'citi'      => 1,
+    'dcu'       => 4,
+    'ing'       => 1,
   }
 
   def self.column_index(bank, column)
@@ -28,22 +23,23 @@ module ImportDataHelper
   end
 
   def self.parse_statement(bank, data, user, category)
-    delimiter = (bank == 'citi' ? '|' : ',')
-    sign = (bank == 'citi' ? -1 : 1)
+    delimiter = (bank == 'old-citi' ? '|' : ',')
+    sign = (bank == 'old-citi' ? -1 : 1)
     n_headers = N_HEADERS[bank]
 
-    CSV.parse(data, :col_sep => delimiter).map do |line|
-      if n_headers > 0
-        n_headers -= 1
-        next
-      end
-
+    CSV.parse(data, :col_sep => delimiter)[n_headers..-1].map do |line|
       if line.length < 3
         next
       end
 
       if bank == 'dcu' and line[column_index(bank, :amount)] == nil
         line[column_index(bank, :amount)] = line[column_index(bank, :amount_credited)]
+      elsif bank == 'citi'
+        if line[column_index(bank, :amount)].empty?
+          line[column_index(bank, :amount)] = line[column_index(bank, :amount_credited)]
+        elsif
+          line[column_index(bank, :amount)] = "-" + line[column_index(bank, :amount)]
+        end
       end
 
       {
