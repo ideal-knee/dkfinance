@@ -35,7 +35,7 @@ module ImportDataHelper
     sign = (bank == 'old-citi' ? -1 : 1)
     n_headers = N_HEADERS[bank]
 
-    CSV.parse(data, :col_sep => delimiter)[n_headers..-1].map do |line|
+    CSV.parse(data.split("\n").map(&:strip).join("\n"), :col_sep => delimiter)[n_headers..-1].map do |line|
       if line.length < 3
         next
       end

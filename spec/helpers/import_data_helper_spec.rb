@@ -43,5 +43,10 @@ describe ImportDataHelper do
         },
       ]
     end
+
+    it "does not blow up on the actual line endings" do
+      data = File.open("spec/resources/citi-2014-11-10-binary.csv").read
+      expect { ImportDataHelper.parse_statement("citi", data, nil, nil) }.to_not raise_error
+    end
   end
 end
