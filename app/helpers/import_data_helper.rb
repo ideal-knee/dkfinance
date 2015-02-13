@@ -1,6 +1,14 @@
 require 'csv'
 
 module ImportDataHelper
+  BANKS = [
+    ['Chase'    , 'chase'    ],
+    ['Old Citi' , 'old-citi' ],
+    ['Citi'     , 'citi'     ],
+    ['DCU'      , 'dcu'      ],
+    ['ING'      , 'ing'      ],
+  ]
+
   STATEMENT_COLUMNS = {
     'chase' => [ :transaction_type, :date, :other_date, :description, :amount ],
     'old-citi' => [ :date, :amount, :description, :unknown ],
