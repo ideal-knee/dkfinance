@@ -30,6 +30,11 @@ module ImportDataHelper
     STATEMENT_COLUMNS[bank].index(column)
   end
 
+  def self.parse_bank_name(file_name)
+    base_name = File.basename( file_name )
+    base_name[0...base_name.index('-')]
+  end
+
   def self.parse_statement(bank, data, user, category)
     delimiter = (bank == 'old-citi' ? '|' : ',')
     sign = (bank == 'old-citi' ? -1 : 1)
@@ -67,5 +72,12 @@ module ImportDataHelper
       Rails.logger.info "Creating transaction: #{transaction}"
       Transaction.create transaction
     end
+  end
+
+  def self.command_line_parse(file_name)
+    bank = parse_bank_name(file_name)
+    data = File.open(file_name).read
+
+    puts parse_statement(bank, data, nil, nil).to_json
   end
 end
