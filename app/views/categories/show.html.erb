@@ -10,5 +10,10 @@
   <%= @category.budget %>
 </p>
 
+<p>
+  <strong>Parent category:</strong>
+  <%= @category.parent_category.try(:name) %>
+</p>
+
 <%= link_to 'Edit', edit_category_path(@category) %> |
 <%= link_to 'Back', categories_path %>

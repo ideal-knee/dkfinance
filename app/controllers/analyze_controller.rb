@@ -3,7 +3,7 @@ class AnalyzeController < ApplicationController
 
   def month_to_month
     paycheck_category = current_user.categories.find_by(name: 'Paycheck')
-    @categories = current_user.categories.where.not(name: 'Paycheck')
+    @categories = current_user.categories.where(parent_category_id: nil).where.not(name: 'Paycheck').order(:name)
     @results = []
     12.times do |i|
       date = (Date.today - i.months)
@@ -11,6 +11,7 @@ class AnalyzeController < ApplicationController
       by_category = {}
       @categories.each do |category|
         by_category[category] = current_user.transactions.where(category_id: category.id, date: date_range).sum(:amount)
+        by_category[category] += current_user.transactions.where(category_id: category.child_categories.map(&:id), date: date_range).sum(:amount)
       end
       @results << {
         date: date,
@@ -25,8 +26,9 @@ class AnalyzeController < ApplicationController
     @category = Category.find_by_machine_name(params[:category])
     @start_date = Date.new(params[:year].to_i, params[:month].to_i)
     end_date = @start_date + 1.month
+    category_ids = [@category.id] + @category.child_categories.map(&:id)
     @transactions = Transaction.where(user: current_user,
-                                      category: @category,
+                                      category_id: category_ids,
                                       date: @start_date...end_date).order(:amount)
   end
 

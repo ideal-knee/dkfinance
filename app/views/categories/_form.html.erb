@@ -20,6 +20,12 @@
     <%= f.label :budget %><br>
     <%= f.text_field :budget %>
   </div>
+
+  <div class="field">
+    <%= f.label :parent_category %><br>
+    <%= collection_select(:category, :parent_category_id, Category.all.order(:name), :id, :name, :prompt => "Select Category") %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

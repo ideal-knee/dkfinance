@@ -1,6 +1,8 @@
 class Category < ActiveRecord::Base
   belongs_to :user
+  belongs_to :parent_category, class_name: "Category", foreign_key: "parent_category_id"
   has_many :transactions
+  has_many :child_categories, class_name: "Category", foreign_key: "parent_category_id"
 
   validates :user, :presence => true
 
