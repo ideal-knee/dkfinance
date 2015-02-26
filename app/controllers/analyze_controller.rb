@@ -5,7 +5,7 @@ class AnalyzeController < ApplicationController
     paycheck_category = current_user.categories.find_by(name: 'Paycheck')
     @categories = current_user.categories.where(parent_category_id: nil).where.not(name: 'Paycheck').order(:name)
     @results = []
-    12.times do |i|
+    24.times do |i|
       date = (Date.today - i.months)
       date_range = date.beginning_of_month..date.end_of_month
       by_category = {}
@@ -19,6 +19,18 @@ class AnalyzeController < ApplicationController
         income: current_user.transactions.where(category_id: paycheck_category.id, date: date_range).sum(:amount),
         by_category: by_category
       }
+    end
+    respond_to do |format|
+      format.html
+      format.csv do
+        csv = CSV.generate do |csv|
+          csv << ["Net", "Income"] + @categories.map(&:name)
+          @results.each do |result|
+            csv << [result[:net], result[:income]] + @categories.map { |category| result[:by_category][category] }
+          end
+        end
+        render text: csv
+      end
     end
   end
 
