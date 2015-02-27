@@ -24,9 +24,9 @@ class AnalyzeController < ApplicationController
       format.html
       format.csv do
         csv = CSV.generate do |csv|
-          csv << ["Net", "Income"] + @categories.map(&:name)
+          csv << ["Date", "Net", "Income"] + @categories.map(&:name)
           @results.each do |result|
-            csv << [result[:net], result[:income]] + @categories.map { |category| result[:by_category][category] }
+            csv << [result[:date].end_of_month, result[:net], result[:income]] + @categories.map { |category| result[:by_category][category] }
           end
         end
         render text: csv
